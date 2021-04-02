@@ -15,6 +15,11 @@
     </v-navigation-drawer>
     <v-app-bar app dark color="blue">
       <v-app-bar-nav-icon @click="drawer=!drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
+      <v-toolbar-title>
+        <router-link v-slot="{ navigate }" custom to="/" class="pointer">
+        <span @click="navigate" role="link">Ad Apllication</span>
+        </router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn
@@ -27,9 +32,9 @@
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <router-view></router-view>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
@@ -39,7 +44,6 @@ export default {
     return {
       drawer: false,
       links: [
-        {title:'Home', icon: 'mdi-home', url: '/'},
         {title:'Login', icon: 'mdi-login', url: '/login'},
         {title:'Registration', icon: 'mdi-account', url: '/registration'},
         {title:'Orders', icon: 'mdi-briefcase-download-outline', url: '/orders'},
@@ -50,3 +54,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .pointer{
+    cursor: pointer;
+  }
+</style>

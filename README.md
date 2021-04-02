@@ -22,3 +22,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### https://coursehunter.net/course/freymvork-vue-js-polnoe-rukovodstvo-dlya-sovremennoy-veb-razrabotki
+### Video stop location # 98

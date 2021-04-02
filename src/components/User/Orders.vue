@@ -1,28 +1,29 @@
 <template>
-  <v-flex xs12 sm6 offset-sm3>
-    <v-list>
-      <v-list-tile>
-        <h1 class="text--secondary">Orders</h1>
-        <v-list-tile-action>
-          <v-checkbox
-            v-for="order in orders"
-            :key="order.id"
-            :input-value="order.done"
-            @change="markDone(order)"
-            :to="'/ad/' + order.idAd"
-            :label="order.name + ': '+order.phone"
-          ></v-checkbox>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Notifications</v-list-tile-title>
-          <v-list-tile-sub-title>Allow notifications</v-list-tile-sub-title>
-        </v-list-tile-content>
-        <v-list-tile-action>
-          <v-btn class="primary">Open</v-btn>
-        </v-list-tile-action>
-      </v-list-tile>
-    </v-list>
-  </v-flex>
+  <v-container>
+    <v-layout row>
+      <v-flex xs12 sm6 offset-sm3>
+        <h1 class="text--secondatry mt-10 mb-3">Orderds</h1>
+        <v-list flat subheader two-line>
+          <v-list-item v-for="order in orders" :key="order.id">
+            <v-list-item-action>
+              <v-checkbox
+                color="success"
+                :input-value="order.done"
+                @change="markDone(order)"
+              ></v-checkbox>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ order.name }}</v-list-item-title>
+              <v-list-item-sub-title>{{ order.phone }}</v-list-item-sub-title>
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-btn class="primary" :to="'/ad/' + order.adId">Open</v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -31,19 +32,19 @@ export default {
     return {
       orders: [
         {
-          id: "abc",
-          name: "Даша",
-          phone: "+7(978)123-45-78",
-          idAd: "123",
+          id: "dsfj",
+          name: "Vladilen",
+          phone: "8-921-121-12-12",
+          adId: "123",
           done: false,
         },
       ],
     };
   },
   methods: {
-    markDone() {
-
-    }
-  }
+    markDone(order) {
+      order.done = true;
+    },
+  },
 };
 </script>

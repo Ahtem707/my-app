@@ -1,58 +1,97 @@
 <template>
   <div>
-    <v-container fluid>
-      <v-carousel>
-        <v-carousel-item
-          v-for="(item, i) in items"
-          :key="i"
-          :src="item.src"
-          :to="item.link"
-          reverse-transition="fade-transition"
-          transition="fade-transition"
-        ></v-carousel-item>
-      </v-carousel>
+    <v-container>
+      <v-layout row>
+        <v-flex xs12>
+          <v-carousel>
+            <v-carousel-item
+              v-for="ad in ads"
+              :key="ad.id"
+              :src="ad.imageSrc"
+              reverse-transition="fade-transition"
+              transition="fade-transition">
+              <div class="carousel-link">
+                <v-btn class="error" :to="'/ad/'+ad.id">{{ad.title}}</v-btn>
+              </div>
+            </v-carousel-item>
+          </v-carousel>
+        </v-flex>
+      </v-layout>
     </v-container>
-    <v-container class="row align-items-center">
-      <v-card
-      class="mx-auto" 
-      max-width="344"
-      v-for="(item,i) in items"
-      :key="i"
-      >
-        <v-img
-          :src="item.src"
-          height="200px"
-        ></v-img>
-        <v-card-title>{{item.title}}</v-card-title>
-        <v-card-subtitle>{{item.subtitle}}</v-card-subtitle>
-        <v-card-actions>
-          <v-btn color="orange lighten-2" text :to="item.link"> Explore </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn icon @click="show = !show">
-            <v-icon>{{ show ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
-          </v-btn>
-        </v-card-actions>
-        <v-expand-transition>
-          <div v-show="show">
-            <v-divider></v-divider>
-            <v-card-text>
-              {{item.cardText}}
-            </v-card-text>
-          </div>
-        </v-expand-transition>
-      </v-card>
+    <v-container grid-list-lg>
+      <v-layout row wrap>
+        <v-flex
+          xs12
+          sm6
+          md4
+          v-for="ad of ads"
+          :key="ad.id"
+        >
+          <v-card class="mx-auto" max-width="500px">
+            <v-img
+              :src="ad.imageSrc"
+              height="200px"
+            ></v-img>
+            <v-card-title primaty-title>
+              <div>
+                <h3 class="headline mb-0">{{ ad.title }}</h3>
+                <div>{{ ad.description }}</div>
+              </div>
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn flet :to="'/ad/'+ad.id">Open</v-btn>
+              <v-btn raised class="primary">Buy</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-container>
+    <v-container> </v-container>
   </div>
 </template>
 
 <script>
-import data from "../data.json";
 export default {
   data() {
     return {
-      items: data.items,
-      show: false,
+      ads: [
+        {
+          title: "First ad",
+          description: "Hello, I am description",
+          promo: false,
+          imageSrc: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
+          id: "1",
+        },
+        {
+          title: "Second ad",
+          description: "Hello, I am description",
+          promo: true,
+          imageSrc: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
+          id: "2",
+        },
+        {
+          title: "Third ad",
+          description: "Hello, I am description",
+          promo: true,
+          imageSrc: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
+          id: "3",
+        },
+      ],
     };
   },
 };
 </script>
+
+<style scoped>
+  .carousel-link{
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    background: rgba(0,0,0,0.5);
+    transform: translate(-50%,0);
+    padding: 5px 15px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+</style>
