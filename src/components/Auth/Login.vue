@@ -34,7 +34,8 @@
                     prepend-icon="lock"
                     label="Password"
                     type="password"
-                    :counter="6"
+                    counter
+                    error-count="7"
                     :rules="passwordRules"
                   >
                   </v-text-field>
