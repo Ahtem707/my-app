@@ -14,7 +14,7 @@
                 <v-toolbar-title> Crate a new account </v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <v-form v-model="options.valid" ref="form" lazy-validation>
+                <v-form v-model="valid" ref="form">
                   <v-text-field
                     name="name"
                     v-model="user.name"
@@ -54,10 +54,10 @@
                   ></v-text-field>
                   <v-btn
                     block="block"
-                    type="submit"
                     @click="submit()"
-                    :disabled="!options.valid"
-                    :class="{ primary: options.valid }"
+                    :loading="loading"
+                    :disabled="!valid || loading"
+                    :class="{ primary: valid }"
                     >Sign up</v-btn
                   >
                 </v-form>
@@ -74,10 +74,7 @@
 export default {
   data() {
     return {
-      options: {
-        shouldStayLoggedIn: false,
-        valid: false,
-      },
+      valid: false,
       user: {
         name: "",
         email: "",
@@ -105,6 +102,11 @@ export default {
       ],
     };
   },
+  computed: {
+    loading(){
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
@@ -112,7 +114,11 @@ export default {
           email: this.user.email,
           password: this.user.password,
         };
-        console.log(user);
+        this.$store.dispatch('registerUser',user)
+        .then(() =>{
+          this.$router.push('/')
+        })
+        .catch(()=>{})
       }
     },
   },

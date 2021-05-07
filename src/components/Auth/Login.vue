@@ -16,7 +16,7 @@
                 </v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <v-form v-model="options.valid" ref="form" validation>
+                <v-form v-model="valid" ref="form" validation>
                   <v-text-field
                     name="email"
                     v-model="user.email"
@@ -40,7 +40,7 @@
                   >
                   </v-text-field>
                   <v-checkbox
-                    v-model="options.shouldStayLoggedIn"
+                    v-model="shouldStayLoggedIn"
                     light="light"
                     label="Stay logged in?"
                     hide-details="hide-details"
@@ -49,8 +49,9 @@
                   <v-btn
                     block="block"
                     @click="submit()"
-                    :disabled="!options.valid"
-                    :class="{ primary: options.valid }"
+                    :disabled="!valid || loading"
+                    :loading="loading"
+                    :class="{ primary: valid }"
                     >Sign in</v-btn
                   >
                 </v-form>
@@ -71,10 +72,8 @@
 export default {
   data() {
     return {
-      options: {
-        shouldStayLoggedIn: false,
-        valid: false,
-      },
+      shouldStayLoggedIn: false,
+      valid: false,
       user: {
         email: "",
         password: "",
@@ -91,6 +90,11 @@ export default {
       ],
     };
   },
+  computed: {
+    loading () {
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
@@ -98,7 +102,11 @@ export default {
           email: this.user.email,
           password: this.user.password,
         };
-        console.log(user);
+        this.$store.dispatch('loginUser',user)
+        .then(() =>{
+          this.$router.push('/')
+        })
+        .catch(()=>{})
       }
     },
   },

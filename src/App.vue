@@ -35,21 +35,63 @@
     <v-main>
       <router-view></router-view>
     </v-main>
+    <template v-if="error">
+      <v-snackbar
+      :timeout="5000"
+      :multi-line="true"
+      color="error"
+      @input="closeError"
+      value="true">
+        {{error}}
+        <v-btn flat dark @click.native="closeError">Close</v-btn>
+      </v-snackbar>
+    </template>
+    <v-btn @click="get">get</v-btn>
   </v-app>
 </template>
 
 <script>
+import firebase from 'firebase/app';
+import 'firebase/auth'
 export default {
   data() {
     return {
       drawer: false,
-      links: [
-        {title:'Login', icon: 'mdi-login', url: '/login'},
-        {title:'Registration', icon: 'mdi-account', url: '/registration'},
-        {title:'Orders', icon: 'mdi-briefcase-download-outline', url: '/orders'},
-        {title:'New ad', icon: 'mdi-plus-circle', url: '/new'},
-        {title:'My ads', icon: 'mdi-briefcase-plus', url: '/list'},
-      ]
+    }
+  },
+  computed: {
+    error () {
+      return this.$store.getters.error
+    },
+    isUserLoggedIn() {
+      return this.$store.getters.isUserLoggedIn
+    },
+    links() {
+      if(this.isUserLoggedIn) {
+        return [
+          {title:'Orders', icon: 'mdi-briefcase-download-outline', url: '/orders'},
+          {title:'New ad', icon: 'mdi-plus-circle', url: '/new'},
+          {title:'My ads', icon: 'mdi-briefcase-plus', url: '/list'}
+        ]
+      } else {
+        return [
+          {title:'Login', icon: 'mdi-login', url: '/login'},
+          {title:'Registration', icon: 'mdi-account', url: '/registration'}
+        ]
+      }
+    }
+  },
+  methods: {
+    get(){
+      firebase.auth().onAuthStateChanged(user => {
+        if(user) {
+          console.log("main/M_created/user: "+user)
+          // this.$store.dispatch('autoLoginUser',user)
+        }
+      })
+    },
+    closeError () {
+      this.$store.dispatch('clearError')
     }
   }
 }
