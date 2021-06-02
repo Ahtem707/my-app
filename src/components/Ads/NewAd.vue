@@ -18,7 +18,7 @@
             name="description"
             label="Ad description"
             type="text"
-            v-model="description"
+            v-model="desc"
             light="light"
             multi-line
             :rules="[(v) => !!v || 'Description is required']"
@@ -26,11 +26,31 @@
           ></v-textarea>
         </v-form>
         <v-layout row class="mb-3">
+          <img :src="imageSrc" height="150" class="mt-3" v-if="imageSrc">
           <v-flex xs12>
-            <v-btn class="warning"
+            <v-btn 
+              v-if="!imageSrc"
+              class="mt-3"
+              color="warning"
+              @click="triggerUpload"
               >Upload
-              <v-icon right dark>cloud_upload</v-icon>
+            <v-icon right dark>mdi-cloud-upload</v-icon>
             </v-btn>
+            <v-btn 
+              v-if="imageSrc"
+              class="mt-3"
+              color="error"
+              @click="imageSrc='';image=null"
+              >Delete
+            <v-icon right dark>mdi-cloud-delete</v-icon>
+            </v-btn>
+            <input 
+              ref="fileInput" 
+              type="file" 
+              style="display:none;" 
+              accept="image/*"
+              @change="onFileChange"
+            >
           </v-flex>
         </v-layout>
         <v-layout row>
@@ -53,7 +73,7 @@
         <v-layout row>
           <v-flex xs12>
             <v-spacer></v-spacer>
-            <v-btn :disabled="!valid" class="success" @click="createAd">Create ad</v-btn>
+            <v-btn :disabled="(!valid && !image) || loading" :loading="loading" class="success" @click="createAd">Create ad</v-btn>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -66,23 +86,49 @@ export default {
   data() {
     return {
       title: "",
-      description: "",
+      desc: "",
       promo: false,
       valid: false,
+      image: null,
+      imageSrc: ""
     };
   },
   methods: {
-      createAd() {
-          if(this.$refs.form.validate()) {
-              const ad = {
-                  title: this.title,
-                  description: this.description,
-                  promo: this.promo,
-                  imageSrc: "https://miro.medium.com/max/3920/1*oZqGznbYXJfBlvGp5gQlYQ.jpeg",
-              }
-              this.$store.dispatch('createAd',ad)
-          }
+    createAd() {
+        if(this.$refs.form.validate() && this.image) {
+            const ad = {
+                title: this.title,
+                desc: this.desc,
+                promo: this.promo,
+                image: this.image
+            }
+            this.$store.dispatch('createAd',ad)
+            .then(() => {
+              this.$router.push("/list")
+              console.log("newAd.vue/createAd/then")
+            })
+            .catch(() => {})
+              console.log("newAd.vue/createAd/catch")
+            }
+    },
+    triggerUpload () {
+      this.$refs.fileInput.click()
+    },
+    onFileChange (event) {
+      const file = event.target.files[0]
+
+      const reader = new FileReader()
+      reader.onload = () => {
+        this.imageSrc = reader.result
       }
+      reader.readAsDataURL(file)
+      this.image = file
+    }
+  },
+  computed: {
+    loading() {
+      return this.$store.getters.loading
+    }
   }
 };
 </script>

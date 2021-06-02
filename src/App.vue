@@ -10,6 +10,8 @@
             <v-list-item-title>{{link.title}}</v-list-item-title>
             <v-icon left>{{link.icon}}</v-icon>
           </v-list-item>
+          <v-list-item v-if="this.isUserLoggedIn" text @click="onLogout"
+          ><v-icon left>mdi-exit-to-app</v-icon>Logout</v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -30,6 +32,8 @@
           <v-icon left>{{link.icon}}</v-icon>
           {{link.title}}
         </v-btn>
+        <v-btn v-if="this.isUserLoggedIn" text @click="onLogout">
+          <v-icon left>mdi-exit-to-app</v-icon>Logout</v-btn>
       </v-toolbar-items>
     </v-app-bar>
     <v-main>
@@ -43,16 +47,13 @@
       @input="closeError"
       value="true">
         {{error}}
-        <v-btn flat dark @click.native="closeError">Close</v-btn>
+        <v-btn dark @click.native="closeError">Close</v-btn>
       </v-snackbar>
     </template>
-    <v-btn @click="get">get</v-btn>
   </v-app>
 </template>
 
 <script>
-import firebase from 'firebase/app';
-import 'firebase/auth'
 export default {
   data() {
     return {
@@ -71,7 +72,7 @@ export default {
         return [
           {title:'Orders', icon: 'mdi-briefcase-download-outline', url: '/orders'},
           {title:'New ad', icon: 'mdi-plus-circle', url: '/new'},
-          {title:'My ads', icon: 'mdi-briefcase-plus', url: '/list'}
+          {title:'My ads', icon: 'mdi-briefcase-plus', url: '/myAds'}
         ]
       } else {
         return [
@@ -82,16 +83,12 @@ export default {
     }
   },
   methods: {
-    get(){
-      firebase.auth().onAuthStateChanged(user => {
-        if(user) {
-          console.log("main/M_created/user: "+user)
-          // this.$store.dispatch('autoLoginUser',user)
-        }
-      })
-    },
     closeError () {
       this.$store.dispatch('clearError')
+    },
+    onLogout () {
+      this.$store.dispatch('logoutUser')
+      this.$router.push("/")
     }
   }
 }

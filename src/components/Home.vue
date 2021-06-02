@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!loading">
     <v-container>
       <v-layout row>
         <v-flex xs12>
@@ -7,7 +7,7 @@
             <v-carousel-item
               v-for="ad in promoAds"
               :key="ad.id"
-              :src="ad.imageSrc"
+              :src="ad.src"
               reverse-transition="fade-transition"
               transition="fade-transition">
               <div class="carousel-link">
@@ -29,7 +29,7 @@
         >
           <v-card class="mx-auto" max-width="500px">
             <v-img
-              :src="ad.imageSrc"
+              :src="ad.src"
               height="200px"
             ></v-img>
             <v-card-title primaty-title>
@@ -41,13 +41,26 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn flet :to="'/ad/'+ad.id">Open</v-btn>
-              <v-btn raised class="primary">Buy</v-btn>
+              <app-vue-modal :ad="ad"></app-vue-modal>
             </v-card-actions>
           </v-card>
         </v-flex>
       </v-layout>
     </v-container>
-    <v-container> </v-container>
+  </div>
+  <div v-else>
+    <v-container>
+    <v-layout row>
+    <v-flex xs12 sm2 offset-sm6 class="mt-5">
+      <v-progress-circular 
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+          ></v-progress-circular>
+    </v-flex>
+    </v-layout>
+    </v-container>
   </div>
 </template>
 
@@ -59,6 +72,9 @@ export default {
     },
     ads() {
       return this.$store.getters.ads
+    },
+    loading() {
+      return this.$store.getters.loading
     }
   }
 }

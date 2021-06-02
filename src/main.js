@@ -5,11 +5,14 @@ import VueRouter from 'vue-router'
 import router from './router/index.js'
 import vuetify from './plugins/vuetify.js'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import firebase from 'firebase/app';
+import fb from 'firebase/app';
 import 'firebase/auth'
+import BuyModalComponent from '@/components/Shared/BuyModal'
 
 Vue.use(VueRouter)
-Vue.config.productionTip = false
+Vue.component('app-vue-modal',BuyModalComponent)
+Vue.config.productionTip = true
+Vue.config.devtools = true;
 
 new Vue({
   vuetify,
@@ -26,13 +29,13 @@ new Vue({
       appId: "1:709206541066:web:773d2875554a9edf5230f3",
       measurementId: "G-YFF91E5MBB"
     };
-    firebase.initializeApp(firebaseConfig)
+    fb.initializeApp(firebaseConfig)
 
-    // firebase.auth().onAuthStateChanged(user => {
-    //   if(user) {
-    //     console.log("main/M_created/user: "+user)
-    //     // this.$store.dispatch('autoLoginUser',user)
-    //   }
-    // })
+    fb.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.$store.dispatch('autoLoginUser', user)
+      }
+   })
+   this.$store.dispatch('fetchAds')
   }
 }).$mount('#app')

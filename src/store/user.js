@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import fb from 'firebase/app';
 import 'firebase/auth'
 
 class User {
@@ -14,14 +14,14 @@ export default {
     mutations: {
         setUser(state,payload) {
             state.user = payload
-        }
+        },      
     },
     actions: {
         async registerUser({commit},{email,password}) {
             commit('clearError')
             commit('setLoading',true)
             try {
-                const user = await firebase.auth().createUserWithEmailAndPassword(email,password)
+                const user = await fb.auth().createUserWithEmailAndPassword(email,password)
                 commit('setUser', new User(user.user.uid))
                 commit('setLoading', false)
             } catch (error) {
@@ -34,7 +34,7 @@ export default {
             commit('clearError')
             commit('setLoading',true)
             try {
-                const user = await firebase.auth().signInWithEmailAndPassword(email,password)
+                const user = await fb.auth().signInWithEmailAndPassword(email,password)
                 commit('setUser', new User(user.user.uid))
                 commit('setLoading', false)
             } catch (error) {
@@ -43,10 +43,13 @@ export default {
                 throw error
             }
         },
-        autoLoginUser({commit},payload) {
-            console.log(payload.user.uid)
-            commit('setUser', new User(payload.user.uid))
-        }
+        autoLoginUser({commit},user) {
+            commit('setUser', new User(user.uid))
+        },
+        logoutUser ({commit}) {
+            fb.auth().signOut()
+            commit('setUser', null)
+        }            
     },
     getters: {
         user(state) {
