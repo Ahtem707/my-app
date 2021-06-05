@@ -2,9 +2,10 @@
   <div v-if="!loading">
     <v-container>
       <v-layout row>
-        <v-flex xs12>
+        <v-flex xs12 class="mt-3">
           <v-carousel>
             <v-carousel-item
+              contain
               v-for="ad in promoAds"
               :key="ad.id"
               :src="ad.src"
@@ -29,6 +30,7 @@
         >
           <v-card class="mx-auto" max-width="500px">
             <v-img
+              contain
               :src="ad.src"
               height="200px"
             ></v-img>

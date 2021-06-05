@@ -9,12 +9,13 @@ class User {
 
 export default {
     state: {
-        user: null
+        user: null,
+        shouldStayLoggedIn: false
     },
     mutations: {
         setUser(state,payload) {
             state.user = payload
-        },      
+        },
     },
     actions: {
         async registerUser({commit},{email,password}) {
@@ -30,11 +31,14 @@ export default {
                 throw error
             }
         },
-        async loginUser({commit},{email,password}) {
+        async loginUser({commit},{email,password,shouldStayLoggedIn}) {
             commit('clearError')
             commit('setLoading',true)
             try {
                 const user = await fb.auth().signInWithEmailAndPassword(email,password)
+                if(!shouldStayLoggedIn) {
+                    indexedDB.deleteDatabase('firebaseLocalStorageDb')
+                }
                 commit('setUser', new User(user.user.uid))
                 commit('setLoading', false)
             } catch (error) {

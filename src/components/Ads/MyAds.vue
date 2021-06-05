@@ -11,7 +11,7 @@
         >
           <v-layout>
             <v-flex xs4>
-              <v-img :src="ad.src" height="175px"></v-img>
+              <v-img contain :src="ad.src" height="175px"></v-img>
             </v-flex>
             <v-flex xs8>
               <v-card-text>

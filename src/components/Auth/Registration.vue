@@ -16,14 +16,6 @@
               <v-card-text>
                 <v-form v-model="valid" ref="form">
                   <v-text-field
-                    name="name"
-                    v-model="user.name"
-                    light="light"
-                    prepend-icon="person"
-                    label="Name"
-                    :rules="nameRules"
-                  ></v-text-field>
-                  <v-text-field
                     name="email"
                     v-model="user.email"
                     light="light"
@@ -76,7 +68,6 @@ export default {
     return {
       valid: false,
       user: {
-        name: "",
         email: "",
         password: "",
         confirmPassword: "",

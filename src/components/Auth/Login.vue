@@ -101,6 +101,7 @@ export default {
         const user = {
           email: this.user.email,
           password: this.user.password,
+          shouldStayLoggedIn: this.shouldStayLoggedIn
         };
         this.$store.dispatch('loginUser',user)
         .then(() =>{

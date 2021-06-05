@@ -56,7 +56,6 @@ export default {
             payload.id
           )
           const fbValue = await firebase.database().ref('ads').push(newAd)
-      
           await firebase.storage().ref().child(`ads/${fbValue.key + imageExt}`).put(image).then(snapshot => {
             snapshot.ref.getDownloadURL().then((downloadURL) => {
               const src = downloadURL
