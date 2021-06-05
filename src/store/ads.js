@@ -28,6 +28,15 @@ export default {
           })
           ad.title = title,
           ad.desc = desc
+        },
+        deleteAd (state, {id}) {
+          const ad = state.ads.find( a => {
+            return a.id == id
+          })
+          console.log(ad)
+          console.log(state.ads)
+          delete state.ads[ad]
+          console.log(state.ads)
         }
     },
     actions: {
@@ -85,7 +94,7 @@ export default {
                 key
               )
             )
-          })    
+          })
           commit('loadAds', resultAds)
           commit('setLoading', false)
         }  catch (error) {
@@ -98,23 +107,35 @@ export default {
         commit('clearError')
         commit('setLoading', true)
         try {
-          console.log("ads.js/updateAd 1")
           await firebase.database().ref('ads').child(id).update({
             title: title,
             desc: desc
           })
-          console.log("ads.js/updateAd 2")
           commit('updateAd',{
             title,desc,id
           })
-          console.log("ads.js/updateAd 3")
           commit('setLoading', false)
         } catch (error) {
           commit('setError', error.message)
           commit('setLoading', false)
           throw error
         }
-      }  
+      },
+      async deleteAd({commit}, {id}) {
+        commit('clearError')
+        commit('setLoading', true)
+        try {
+          await firebase.database().ref('ads').child(id).remove()
+          commit('deleteAd',{
+            id
+          })
+          commit('setLoading', false)
+        } catch (error) {
+          commit('setError', error.message)
+          commit('setLoading', false)
+          throw error
+        }
+      }
     },
     getters: {
         ads(state) {
@@ -129,10 +150,10 @@ export default {
           return state.ads.filter(ad => {
               return ad.ownerId == getters.user.id
           })
-        },        
+        },
         adById(state) {
             return adId => {
-                return state.ads.find(ad => ad.id === adId)
+              return state.ads.find(ad => ad.id === adId)
             }
         }
     }

@@ -11,7 +11,7 @@
               reverse-transition="fade-transition"
               transition="fade-transition">
               <div class="carousel-link">
-                <v-btn class="error" :to="'/ad/'+ad.id">{{ad.title}}</v-btn>
+                <v-btn class="success" :to="'/ad/'+ad.id">{{ad.title}}</v-btn>
               </div>
             </v-carousel-item>
           </v-carousel>
@@ -32,15 +32,14 @@
               :src="ad.src"
               height="200px"
             ></v-img>
-            <v-card-title primaty-title>
-              <div>
+            <v-card-title primaty-title style="height:100px">
+              <div style="height: inherit; text-align: top">
                 <h3 class="headline mb-0">{{ ad.title }}</h3>
-                <div>{{ ad.description }}</div>
               </div>
             </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn flet :to="'/ad/'+ad.id">Open</v-btn>
+              <v-btn flet :to="'/ad/'+ad.id" class="mr-3">Open</v-btn>
               <app-vue-modal :ad="ad"></app-vue-modal>
             </v-card-actions>
           </v-card>

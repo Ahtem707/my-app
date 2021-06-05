@@ -73,7 +73,7 @@
         <v-layout row>
           <v-flex xs12>
             <v-spacer></v-spacer>
-            <v-btn :disabled="(!valid && !image) || loading" :loading="loading" class="success" @click="createAd">Create ad</v-btn>
+            <v-btn :disabled="(!valid && !image) || loading" :loading="loading" class="success mb-5" @click="createAd">Create ad</v-btn>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -104,11 +104,9 @@ export default {
             }
             this.$store.dispatch('createAd',ad)
             .then(() => {
-              this.$router.push("/list")
-              console.log("newAd.vue/createAd/then")
+              this.$router.push("/myAds")
             })
             .catch(() => {})
-              console.log("newAd.vue/createAd/catch")
             }
     },
     triggerUpload () {

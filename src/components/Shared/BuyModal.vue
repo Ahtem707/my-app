@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="modal" width="400px">
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on" color="primary">Buy</v-btn>
+      <v-btn v-on="on" dark class="green">Buy</v-btn>
     </template>
     <v-card>
       <v-container>

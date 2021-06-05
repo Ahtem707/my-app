@@ -2,10 +2,10 @@
     <v-container>
         <v-layout row>
             <v-flex xs12>
-                <v-card class="mt-5" v-if="!loading">
+                <v-card class="my-5" v-if="!loading">
                     <v-img
                     :src="ad.src"
-                    height="300px"
+                    height="500px"
                     ></v-img>
                     <v-card-text>
                         <h1 class="text--primary">{{ad.title}}</h1>
@@ -13,8 +13,9 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <modal-dialog :ad="ad" v-if="isOwner"></modal-dialog>
-                        <app-vue-modal :ad="ad"></app-vue-modal>
+                        <modal-dialog :ad="ad" v-if="isOwner" class="m-2"></modal-dialog>
+                        <check-deleted :ad="ad" v-if="isOwner" class="m-2"></check-deleted>
+                        <app-vue-modal :ad="ad" class="m-2"></app-vue-modal>
                     </v-card-actions>
                 </v-card>
                 <div v-else>
@@ -38,6 +39,7 @@
 
 <script>
 import EditAdModal from './EditAdModal'
+import DeleteAdModal from './DeleteAdModal'
 export default {
     computed: {
         ad() {
@@ -51,7 +53,16 @@ export default {
         }
     },
     components: {
-        'modal-dialog': EditAdModal
-	}
+        'modal-dialog': EditAdModal,
+        'check-deleted': DeleteAdModal
+	},
+    watch: {
+        loading: function(val) {
+            if(this.ad === undefined && !val) {
+                this.$store.commit('setError', "No ad")
+                this.$router.push("/")
+            }
+        }
+    }
 }
 </script>
