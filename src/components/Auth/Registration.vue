@@ -24,6 +24,14 @@
                     :rules="nameRules"
                   ></v-text-field>
                   <v-text-field
+                    name="phoneNumber"
+                    v-model="user.phoneNumber"
+                    light="light"
+                    prepend-icon="phone"
+                    label="Phone number"
+                    :rules="phoneNumberRules"
+                  ></v-text-field>
+                  <v-text-field
                     name="email"
                     v-model="user.email"
                     light="light"
@@ -77,15 +85,16 @@ export default {
       valid: false,
       user: {
         name: "",
+        phoneNumber: "",
         email: "",
         password: "",
         confirmPassword: "",
       },
       nameRules: [
-        (v) => !!v || "Name is required",
-        (v) =>
-          (v && v.length >= 6) ||
-          "Name must be more or equel than 6 characters",
+        (v) => !!v || "Name is required"
+      ],
+      phoneNumberRules: [
+        (v) => !!v || "Phone number is required"
       ],
       emailRules: [
         (v) => !!v || "E-mail is required",
@@ -113,6 +122,8 @@ export default {
         const user = {
           email: this.user.email,
           password: this.user.password,
+          name: this.user.name,
+          phoneNumber: this.user.phoneNumber
         };
         this.$store.dispatch('registerUser',user)
         .then(() =>{

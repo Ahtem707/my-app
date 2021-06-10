@@ -32,8 +32,12 @@
           <v-icon left>{{link.icon}}</v-icon>
           {{link.title}}
         </v-btn>
-        <v-btn v-if="this.isUserLoggedIn" text @click="onLogout">
-          <v-icon left>mdi-exit-to-app</v-icon>Logout</v-btn>
+        <div v-if="this.isUserLoggedIn" style="height: 100%">
+          <p style="background:#5AB55E;width:100%;height:43%;margin:0;text-align:center;padding-top:2px">{{user.displayName}}</p>
+          <v-btn @click="onLogout" color="red" elevation="0">
+          <v-icon left>mdi-exit-to-app</v-icon>
+           Logout</v-btn>
+        </div>
       </v-toolbar-items>
     </v-app-bar>
     <v-main>
@@ -61,6 +65,9 @@ export default {
     }
   },
   computed: {
+    user() {
+      return this.$store.getters.user
+    },
     error () {
       return this.$store.getters.error
     },

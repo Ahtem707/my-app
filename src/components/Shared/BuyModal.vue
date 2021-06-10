@@ -60,6 +60,12 @@ export default {
     };
   },
   props: ["ad"],
+  created() {
+    const user = this.$store.getters.user
+    console.log("Buy> ",user)
+    this.name = user.displayName,
+    this.phone = user.phoneNumber
+  },
   methods: {
     onCancel() {
       this.name = ""

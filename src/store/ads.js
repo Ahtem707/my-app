@@ -55,17 +55,19 @@ export default {
             payload.promo,
             payload.id
           )
-          const fbValue = await firebase.database().ref('ads').push(newAd)
-      
-          await firebase.storage().ref().child(`ads/${fbValue.key + imageExt}`).put(image).then(snapshot => {
-            snapshot.ref.getDownloadURL().then((downloadURL) => {
-              const src = downloadURL
-              firebase.database().ref("ads").child(fbValue.key).update({ src })
-              commit('setLoading', false)
-              commit('createAd', {
-                ...newAd,
-                id: fbValue.key,
-                src
+          await firebase.database().ref('ads').push(newAd)
+          .then(res => {
+            firebase.storage().ref().child(`ads/${res.key + imageExt}`).put(image)
+            .then(snapshot => {
+              snapshot.ref.getDownloadURL().then((downloadURL) => {
+                const src = downloadURL
+                firebase.database().ref("ads").child(res.key).update({ src })
+                commit('setLoading', false)
+                commit('createAd', {
+                  ...newAd,
+                  id: res.key,
+                  src
+                })
               })
             })
           })
@@ -79,24 +81,26 @@ export default {
         commit('clearError')
         commit('setLoading', true)
         try {
-          const fbVal = await firebase.database().ref('ads').once('value')
-          const ads = fbVal.val()
-          const resultAds = []
-          Object.keys(ads).forEach(key => {
-            const ad = ads[key]
-            resultAds.push(
-              new Ad(
-                ad.title,
-                ad.desc,
-                ad.ownerId,
-                ad.src,
-                ad.promo,
-                key
+          await firebase.database().ref('ads').once('value')
+          .then(res => {
+            const ads = res.val()
+            const resultAds = []
+            Object.keys(ads).forEach(key => {
+              const ad = ads[key]
+              resultAds.push(
+                new Ad(
+                  ad.title,
+                  ad.desc,
+                  ad.ownerId,
+                  ad.src,
+                  ad.promo,
+                  key
+                )
               )
-            )
+            })
+            commit('loadAds', resultAds)
+            commit('setLoading', false)
           })
-          commit('loadAds', resultAds)
-          commit('setLoading', false)
         }  catch (error) {
           commit('setError', error.message)
           commit('setLoading', false)
