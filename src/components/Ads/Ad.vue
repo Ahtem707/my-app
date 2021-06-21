@@ -4,7 +4,6 @@
             <v-flex xs12>
                 <v-card class="my-5" v-if="!loading">
                     <v-img
-                    contain
                     :src="ad.src"
                     height="500px"
                     ></v-img>

@@ -21,13 +21,12 @@ new Vue({
   store,
   created() {
     const firebaseConfig = {
-      apiKey: "AIzaSyCqgXMQfp9J7BEgRd8gUXBvxRjM9-RPFQw",
-      authDomain: "vue-app-ce14c.firebaseapp.com",
-      projectId: "vue-app-ce14c",
-      storageBucket: "vue-app-ce14c.appspot.com",
-      messagingSenderId: "636948364692",
-      appId: "1:636948364692:web:6d3ef2f628088e89aee381",
-      measurementId: "G-J4VKB0L6ZY"
+      apiKey: "AIzaSyBoyoooBTv_NFYMJ5FtKJik1xh5KcgB0sc",
+      authDomain: "my-app-1972c.firebaseapp.com",
+      projectId: "my-app-1972c",
+      storageBucket: "my-app-1972c.appspot.com",
+      messagingSenderId: "413729819733",
+      appId: "1:413729819733:web:570227d2e37b41a32418dc"
     };
     fb.initializeApp(firebaseConfig)
 
