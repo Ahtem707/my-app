@@ -49,9 +49,7 @@ export default {
             try {
                 await fb.auth().signInWithEmailAndPassword(email, password)
                 .then((res) => {
-                    console.log("shouldStayLoggedIn> ",shouldStayLoggedIn)
                     if(!shouldStayLoggedIn) {
-                        console.log("shouldStayLoggedIn> ",shouldStayLoggedIn)
                         indexedDB.deleteDatabase('firebaseLocalStorageDb')
                     }
                     commit('setUser', new User(res.user.uid, res.user.displayName, res.user.phoneNumber))
