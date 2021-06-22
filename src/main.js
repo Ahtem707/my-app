@@ -20,13 +20,14 @@ new Vue({
   router: router,
   store,
   created() {
-    const firebaseConfig = {
-      apiKey: "AIzaSyBoyoooBTv_NFYMJ5FtKJik1xh5KcgB0sc",
-      authDomain: "my-app-1972c.firebaseapp.com",
-      projectId: "my-app-1972c",
-      storageBucket: "my-app-1972c.appspot.com",
-      messagingSenderId: "413729819733",
-      appId: "1:413729819733:web:570227d2e37b41a32418dc"
+    var firebaseConfig = {
+      apiKey: "AIzaSyC7NsceT7izxcieKLMBfoJnCiaKhfigiSA",
+      authDomain: "my-app-95eaa.firebaseapp.com",
+      databaseURL: "https://my-app-95eaa-default-rtdb.firebaseio.com",
+      projectId: "my-app-95eaa",
+      storageBucket: "my-app-95eaa.appspot.com",
+      messagingSenderId: "393522771381",
+      appId: "1:393522771381:web:4c09f6b5566036cdaa55fc"
     };
     fb.initializeApp(firebaseConfig)
 
